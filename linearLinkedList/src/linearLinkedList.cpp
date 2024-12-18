@@ -93,8 +93,6 @@ void insertLast(nodeHeader* header, char* insertData){
     }else{
 
         newNode -> link = NULL;
-
-
         
         node** temp = new node*();
         temp = header -> head;
@@ -106,11 +104,13 @@ void insertLast(nodeHeader* header, char* insertData){
         delete temp; //임시 값 해제.
 
     }
-    
-
-
 };
 
+void copyNode(node* saver, node* target){
+
+    
+
+};
 
 
 

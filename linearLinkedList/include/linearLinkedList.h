@@ -14,6 +14,8 @@ void freeList(nodeHeader* header); //메모리 해제
 
 void deleteNode(nodeHeader* header, node* target);
 
+void copyNode(node* saver, node* target);
+
 node* searchNode(nodeHeader* header, char* targetData);
 
 #endif
