@@ -17,6 +17,10 @@ main.cpp를 실행하면, linarLinkedList.cpp도 실행되는 이유?
 
 #include <stdio.h>
 #include <string.h>
+#include <iostream>
+
+
+using namespace std;
 
 
 nodeHeader* makeList(){
@@ -106,9 +110,17 @@ void insertLast(nodeHeader* header, char* insertData){
     }
 };
 
-void copyNode(node* saver, node* target){
+bool copyNode(node* destination, node* source){
 
+    cout << sizeof(destination) << endl;
+    if(sizeof(destination) != sizeof(source)){
+        return false;
+    }
     
+
+    memcpy()
+
+
 
 };
 
