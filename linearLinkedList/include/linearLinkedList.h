@@ -10,7 +10,8 @@ void insertMiddle(nodeHeader* header,node* pre ,char* insertData);
 void insertLast(nodeHeader* header, char* insertData);
 
 void printList(nodeHeader* header);
-void freeList(nodeHeader* header); //메모리 해제
+void freeList(nodeHeader* header); //메모리 해제 함수
+void freeList_recursiveExcute(nodeHeader* header, node* target); //메모리 해제에 쓰이는 재귀 함수수
 
 void deleteNode(nodeHeader* header, node* target);
 
