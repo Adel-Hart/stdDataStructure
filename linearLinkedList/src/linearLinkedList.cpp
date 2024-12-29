@@ -271,7 +271,7 @@ void printList(nodeHeader *header)
 
     cout << "\n\n노드 헤더 출력\n"  << endl;
 
-    while (temp != NULL && temp != nullptr) //ver3. 향상된 끝 노드 검출 로직. (마지막 노드까지 처리 가능함.)
+    while (temp != NULL || temp != nullptr) //ver3. 향상된 끝 노드 검출 로직. (마지막 노드까지 처리 가능함.)
     {
 
         cout << temp->data << endl; // 노드출력
@@ -335,7 +335,7 @@ void freeList_recursiveExcute(nodeHeader *header, node *target)
 void deleteNode(nodeHeader *header, node *target)
 {
 
-    if(target == NULL && target == nullptr) return;  //ver3. 입력받은 target 이 null 일 수 있으므로, 확인절차.
+    if(target == NULL || target == nullptr) return;  //ver3. 입력받은 target 이 null 일 수 있으므로, 확인절차.
 
     node *preNode = searchNode(header, target); // new로 받을 코드를 새로 생성 하지 않아도 ㅇㅋ      수정 - 전 노드를 알아야 하기 때문에, target의 주소를 가지고 있는 노드를 검색함.
     if(!preNode) { // preNode == NULL 과 같은 의미 (NULL은 0을 의미)    ->  전 노드가 없으면 즉, 맨 처음 놈이면면
