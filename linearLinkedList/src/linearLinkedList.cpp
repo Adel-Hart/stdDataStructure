@@ -119,7 +119,7 @@ void insertLast(nodeHeader *header, char *insertData)
         */  //ver3. 이미 만든 함수를 이용하여 메모리 관리 및 가독성 향상을 올림.   (요런식으로 바꾸면, delete 안쓰고 함수 없어지면 포인터 사라져서 관리 쉽지롱!)
 
 
-        node *temp = searchNode(header, (node*)NULL); //NULL이 link인 즉, 마지막 노드를 검색함.    궁금점 : (node*) 이렇게 강제 형변환, 나중에 ㄱㅊ은걸까?
+        node *temp = _searchNode(header, (node*)NULL); //NULL이 link인 즉, 마지막 노드를 검색함.    궁금점 : (node*) 이렇게 강제 형변환, 나중에 ㄱㅊ은걸까?
 
         if(temp == NULL){
             cout << "마지막 노드 검색 실패, 작업 성공하지 못 했습니다." << endl;
@@ -133,7 +133,7 @@ void insertLast(nodeHeader *header, char *insertData)
     }
 };
 
-bool copyNode(node *destination, node *source)
+bool _copyNode(node *destination, node *source)
 {
 
     cout << sizeof(*destination) << endl;
@@ -150,7 +150,7 @@ bool copyNode(node *destination, node *source)
 
 //여기서부터 return pointer를 어떻게 줘야할지 문제임.
 
-node *searchNode(nodeHeader *header, char *targetData)
+node *_searchNode(nodeHeader *header, char *targetData)
 {
 
     //node *result = new node(); // 결과를 저장할 노드 결과를 새로운 메모리를 만들어야(stack에 저장) 함수가 끝나도 사라지지 x
@@ -235,7 +235,7 @@ node *searchNode(nodeHeader *header, char *targetData)
      */
 };
 
-node *searchNode(nodeHeader *header, node *targetLink)
+node *_searchNode(nodeHeader *header, node *targetLink)
 {
     //node *result = new node(); // 결과를 저장할 노드
 
@@ -271,7 +271,7 @@ void printList(nodeHeader *header)
 
     cout << "\n\n노드 헤더 출력\n"  << endl;
 
-    while (temp != NULL && temp != nullptr) //ver3. 향상된 끝 노드 검출 로직. (마지막 노드까지 처리 가능함.)
+    while (temp != NULL || temp != nullptr) //ver3. 향상된 끝 노드 검출 로직. (마지막 노드까지 처리 가능함.)
     {
 
         cout << temp->data << endl; // 노드출력
@@ -289,7 +289,7 @@ void freeList(nodeHeader *header)
     if (header->head != NULL)
     { // 노드가 1개라도 있는 리스트만
 
-        freeList_recursiveExcute(header, header->head);
+        _freeList_recursiveExcute(header, header->head);
         // 재귀함수를 통해, 노드를 순차적으로 제거해감 + 포인터도 비움.
     }
 
@@ -302,11 +302,11 @@ void freeList(nodeHeader *header)
     return;
 }
 
-void freeList_recursiveExcute(nodeHeader *header, node *target)
+void _freeList_recursiveExcute(nodeHeader *header, node *target)
 { // 재귀함수임.
 
     if (target->link != NULL)
-        freeList_recursiveExcute(header, target->link); // 가장 끝 노드까지 재귀 시키기
+        _freeList_recursiveExcute(header, target->link); // 가장 끝 노드까지 재귀 시키기
 
     if (nullptr != target)
     {
@@ -335,9 +335,9 @@ void freeList_recursiveExcute(nodeHeader *header, node *target)
 void deleteNode(nodeHeader *header, node *target)
 {
 
-    if(target == NULL && target == nullptr) return;  //ver3. 입력받은 target 이 null 일 수 있으므로, 확인절차.
+    if(target == NULL || target == nullptr) return;  //ver3. 입력받은 target 이 null 일 수 있으므로, 확인절차.
 
-    node *preNode = searchNode(header, target); // new로 받을 코드를 새로 생성 하지 않아도 ㅇㅋ      수정 - 전 노드를 알아야 하기 때문에, target의 주소를 가지고 있는 노드를 검색함.
+    node *preNode = _searchNode(header, target); // new로 받을 코드를 새로 생성 하지 않아도 ㅇㅋ      수정 - 전 노드를 알아야 하기 때문에, target의 주소를 가지고 있는 노드를 검색함.
     if(!preNode) { // preNode == NULL 과 같은 의미 (NULL은 0을 의미)    ->  전 노드가 없으면 즉, 맨 처음 놈이면면
     
         header -> head = target -> link; //시작 지점 건내주고고
