@@ -104,6 +104,7 @@ void insertLast(nodeHeader *header, char *insertData)
 
         newNode->link = NULL; // == (*newNode).link = NULL    !!!!   즉, 화살표 연산자는 포인터 이름만으로 동작 하는 것  (포인터 이름 앞에 * 붙이면 X!!!)
 
+        /*
         node *temp = new node(); // 마지막노드 탐색을 위한 임시 노드 생성
 
         temp = header->head; // 탐색 시작점 설정(head)
@@ -114,6 +115,19 @@ void insertLast(nodeHeader *header, char *insertData)
         temp->link = newNode; // 얕은 복사이기 때문에 실제 temp 가 가르키는 Node에 적용이 됨
 
         delete temp; // 얕은 복사여도 temp만 지워지지 temp가 가르키는 값도 지워지지 않음.
+
+        */  //ver3. 이미 만든 함수를 이용하여 메모리 관리 및 가독성 향상을 올림.   (요런식으로 바꾸면, delete 안쓰고 함수 없어지면 포인터 사라져서 관리 쉽지롱!)
+
+
+        node *temp = searchNode(header, (node*)NULL); //NULL이 link인 즉, 마지막 노드를 검색함.    궁금점 : (node*) 이렇게 강제 형변환, 나중에 ㄱㅊ은걸까?
+
+        if(temp == NULL){
+            cout << "마지막 노드 검색 실패, 작업 성공하지 못 했습니다." << endl;
+
+            return;
+        }
+
+        temp -> link = newNode;
 
         return;
     }
@@ -257,7 +271,7 @@ void printList(nodeHeader *header)
 
     cout << "\n\n노드 헤더 출력\n"  << endl;
 
-    while (temp->link != NULL)
+    while (temp != NULL && temp != nullptr) //ver3. 향상된 끝 노드 검출 로직. (마지막 노드까지 처리 가능함.)
     {
 
         cout << temp->data << endl; // 노드출력
@@ -321,27 +335,33 @@ void freeList_recursiveExcute(nodeHeader *header, node *target)
 void deleteNode(nodeHeader *header, node *target)
 {
 
-    node *preNode = searchNode(header, target -> link); // new로 받을 코드를 새로 생성 하지 않아도 ㅇㅋ
+    if(target == NULL && target == nullptr) return;  //ver3. 입력받은 target 이 null 일 수 있으므로, 확인절차.
+
+    node *preNode = searchNode(header, target); // new로 받을 코드를 새로 생성 하지 않아도 ㅇㅋ      수정 - 전 노드를 알아야 하기 때문에, target의 주소를 가지고 있는 노드를 검색함.
     if(!preNode) { // preNode == NULL 과 같은 의미 (NULL은 0을 의미)    ->  전 노드가 없으면 즉, 맨 처음 놈이면면
     
         header -> head = target -> link; //시작 지점 건내주고고
 
-        delete target;
-        target = nullptr;
+        // delete target;
+        // target = nullptr;
 
 
     }else{ //전노드가 잇으면, 즉 중간 친구면
         
         
-    preNode -> link = target -> link; //전껄로 인수인계     맨마지막 노드여도(다음이 NULL), 결국엔 NULL을 주니 상관 x
+        preNode -> link = target -> link; //전껄로 인수인계     맨마지막 노드여도(다음이 NULL), 결국엔 NULL을 주니 상관 x
+
+        // delete target;
+        // target = nullptr;
+            
+    }
 
     delete target;
-    target = nullptr;
-        
-    }
+    target = nullptr; //ver3. 가독성 향상
 
 
     return;
+
 
     /**
      *

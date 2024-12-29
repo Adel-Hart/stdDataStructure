@@ -17,3 +17,25 @@
  할 것
  1. 해당 연결 리스트, 인덱스 기능 추가해 보기.
  2. 스마트 포인터 사용해보기
+
+
+ 개선점
+ 1. while 문 루프 로직 개선
+    - while( temp -> link != NULL) 인데, temp 는 NULL 이 될수도 있음을 이용하여
+    while(temp != NULL) 하면 된다.
+    이러면 괜히 끝을 예외 처리 할 필요 없음.
+
+
+ 2. https://velog.io/@tosspayments/null-%EB%A6%AC%ED%84%B4%EC%9D%80-%EC%99%9C-%EB%82%98%EC%81%A0%EA%B9%8C
+
+
+ 궁금점
+ 1. (node*) 이렇게 강제 형변환, 나중에 ㄱㅊ은걸까?
+ 2. 책에서는 node delete함수를 재귀가 아니라, 다른 로직으로 했는데 속도 차이?
+
+
+
+
+ 표기법
+ 1. ver1,2 -> 직접 검토
+    ver3 -> chatGpt 검토.
