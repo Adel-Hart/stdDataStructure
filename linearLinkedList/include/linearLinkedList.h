@@ -11,14 +11,16 @@ void insertLast(nodeHeader* header, char* insertData);
 
 void printList(nodeHeader* header);
 void freeList(nodeHeader* header); //메모리 해제 함수
-void freeList_recursiveExcute(nodeHeader* header, node* target); //메모리 해제에 쓰이는 재귀 함수수
+void _freeList_recursiveExcute(nodeHeader* header, node* target); //메모리 해제에 쓰이는 재귀 함수수
 
 void deleteNode(nodeHeader* header, node* target);
 
-bool copyNode(node* saver, node* target);
+bool _copyNode(node* saver, node* target);
 
-node* searchNode(nodeHeader* header, char* targetData);
-node* searchNode(nodeHeader* header, node* targetLink); //오버로딩
+node* _searchNode(nodeHeader* header, char* targetData);
+node* _searchNode(nodeHeader* header, node* targetLink); //오버로딩
 
+
+//ver4. 내부(구현부, linearLinkedList.cpp) 에서만 쓰이는 함수는 _로 구분.
 
 #endif
