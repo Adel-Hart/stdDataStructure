@@ -18,5 +18,5 @@ void deleteNode(nodeHeader* header, node* target);
 bool copyNode(node* saver, node* target);
 
 node* searchNode(nodeHeader* header, char* targetData);
-node* searchPreNode(nodeHeader* header, node* targetLink);
+node* searchNode(nodeHeader* header, node* targetLink); //오버로딩
 #endif

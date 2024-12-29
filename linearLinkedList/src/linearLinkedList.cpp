@@ -102,7 +102,7 @@ void insertLast(nodeHeader *header, char *insertData)
     else
     {
 
-        newNode->link = NULL; // == (*newNode).link = NULL       즉, 화살표 연산자는 포인터 이름만으로 동작 하는 것
+        newNode->link = NULL; // == (*newNode).link = NULL    !!!!   즉, 화살표 연산자는 포인터 이름만으로 동작 하는 것  (포인터 이름 앞에 * 붙이면 X!!!)
 
         node *temp = new node(); // 마지막노드 탐색을 위한 임시 노드 생성
 
@@ -133,14 +133,17 @@ bool copyNode(node *destination, node *source)
     return true;
 };
 
+
+//여기서부터 return pointer를 어떻게 줘야할지 문제임.
+
 node *searchNode(nodeHeader *header, char *targetData)
 {
 
-    node *result = new node(); // 결과를 저장할 노드 결과를 새로운 메모리를 만들어야(stack에 저장) 함수가 끝나도 사라지지 x
+    //node *result = new node(); // 결과를 저장할 노드 결과를 새로운 메모리를 만들어야(stack에 저장) 함수가 끝나도 사라지지 x
 
     //node *temp = new node(); // 탐색할 임시 노드
 
-    node* temp = header -> head; //탐색의 임시 노드 설정
+    node* temp = header -> head; //탐색의 임시 노드 설정 (스택에 저장되어, 함수가 끝나면 삭제되는 포인터  <포인터가 가르키는 노드는 삭제되지 X!>  )
 
 
     //temp = header->head; // 탐색 초기 설정
@@ -153,6 +156,7 @@ node *searchNode(nodeHeader *header, char *targetData)
 
         temp = temp->link;
     };
+
     /**
      * 같은 메모리를 가르키는 지 확인 하려면 ==
      * 내용을 확인하려면 strcmp
@@ -176,6 +180,8 @@ node *searchNode(nodeHeader *header, char *targetData)
     //     return NULL;
     // } ver 1.
 
+/*
+
     if (copyNode(result, temp))
     {
 
@@ -190,6 +196,12 @@ node *searchNode(nodeHeader *header, char *targetData)
         delete result;
         return NULL;
     }
+
+*///ver2. 그냥 copy나 strcmp 없이, 스택저장포인터하나를 return 하는 것으로 변경.
+
+    return temp;
+
+
 
 
     /**
@@ -209,13 +221,13 @@ node *searchNode(nodeHeader *header, char *targetData)
      */
 };
 
-node *searchPreNode(nodeHeader *header, node *targetLink)
+node *searchNode(nodeHeader *header, node *targetLink)
 {
-    node *result = new node(); // 결과를 저장할 노드
+    //node *result = new node(); // 결과를 저장할 노드
 
-    node *temp = new node(); // 탐색할 임시 노드
+    //node *temp = new node(); // 탐색할 임시 노드
 
-    temp = header->head; // 탐색 초기 설정
+    node *temp = header -> head; // 탐색 초기 설정
 
     while (temp->link != targetLink)
     {
@@ -224,6 +236,9 @@ node *searchPreNode(nodeHeader *header, node *targetLink)
 
         temp = temp->link;
     }
+
+    return temp; //스택에 있는 포인터 리턴(함수가 끝나면 포인터는 사라지지만 가르키는 값은 힙에 있어 사라지지 않음.)
+
 }
 
 void printList(nodeHeader *header)
@@ -232,14 +247,15 @@ void printList(nodeHeader *header)
     // 리스트 오류 거르기.
 
     if (header->head == NULL)
+        cout << "리스트가 비었습니다." << endl;
         return;
 
-    node *temp = new node(); // 노드를 출력할 임시 개체.
+    //node *temp = new node(); // 노드를 출력할 임시 개체.
 
-    cout << "\n\n노드 헤더 출력\n"
-         << endl;
+    
+    node *temp = header->head; // 시작 노드의 주소값을 임시 개체에 저장.
 
-    temp = header->head; // 시작 노드의 주소값을 임시 개체에 저장.
+    cout << "\n\n노드 헤더 출력\n"  << endl;
 
     while (temp->link != NULL)
     {
@@ -249,7 +265,7 @@ void printList(nodeHeader *header)
         temp = temp->link; // 다ㅡ음 노드 이동
     }
 
-    delete temp; // 임시 노드 메모리 해제
+    temp = nullptr; // 임시 노드 메모리 해제
     return;
 };
 
@@ -305,10 +321,31 @@ void freeList_recursiveExcute(nodeHeader *header, node *target)
 void deleteNode(nodeHeader *header, node *target)
 {
 
-    node *res = searchNode(header, target->data); // new로 받을 코드를 새로 생성 하지 않아도 ㅇㅋ
+    node *preNode = searchNode(header, target -> link); // new로 받을 코드를 새로 생성 하지 않아도 ㅇㅋ
+    if(!preNode) { // preNode == NULL 과 같은 의미 (NULL은 0을 의미)    ->  전 노드가 없으면 즉, 맨 처음 놈이면면
+    
+        header -> head = target -> link; //시작 지점 건내주고고
+
+        delete target;
+        target = nullptr;
+
+
+    }else{ //전노드가 잇으면, 즉 중간 친구면
+        
+        
+    preNode -> link = target -> link; //전껄로 인수인계     맨마지막 노드여도(다음이 NULL), 결국엔 NULL을 주니 상관 x
+
+    delete target;
+    target = nullptr;
+        
+    }
+
+
+    return;
+
     /**
      *
-     * 1.node* res 로 리턴 값을 받았기에, 얕은 복사를 함. 따라서 delete res 하면 리턴값도 해제됨. (이후에 ptr = nullptr 사용)
+     * 1.node* preNode 로 리턴 값을 받았기에, 얕은 복사를 함. 따라서 delete preNode 하면 리턴값도 해제됨. (이후에 ptr = nullptr 사용)
      *
      * 2.파라미터가 *char 인데, 넘길 때 인자가 왜 char인가
      *
@@ -319,3 +356,46 @@ void deleteNode(nodeHeader *header, node *target)
      *
      */
 }
+    
+
+
+
+
+
+
+
+    /*
+
+    --- 태스트 ---
+
+
+#include <iostream>
+
+
+
+int* test(int* ptr){
+    
+    
+    int* returnPtr = ptr;
+    
+    return returnPtr;
+    
+    
+}
+
+int main()
+{
+    int* mainPtr = new int(3);
+    
+    int* cont = test(mainPtr);
+
+    std::cout << *mainPtr << std::endl;   -> 3출력
+
+    delete cont;
+    
+    std::cout << *mainPtr;  -> 이상한 값 출력 (포인터가 얕은 참조로 복사된 객체를 delete 함으로써 삭제됨을 알 수 있따.)
+
+    return 0;
+}
+
+*/
