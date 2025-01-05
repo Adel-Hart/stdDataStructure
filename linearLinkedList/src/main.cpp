@@ -1,98 +1,59 @@
-#include <linearLinkedList.h>
 #include <stdio.h>
 #include <iostream>
+#include "node.h"
+#include "linearLinkedList.h"
+
+/*
+linearLinkedList
+*/
 
 using namespace std;
 
-int main(){
-    
-    int menuNum = 0; //메뉴 번호 입력을 저장 할 변수 초기화
 
-    nodeHeader* nodeHeader; //노드 헤더를 저장할 (즉, 리스트를 저장할 객체 미리 선언.)
+int main() {
 
-    bool loopStopper = false; //루프문 트리거  true 일때 벗어나짐.
+    nodeHeader* nodeHead; //스택에 저장됨됨
 
-
-    cout << "번호를 입력하여, 명령을 실행하세요.  ! 입력이 필요한 메뉴는 번호앞에 언더바로 구분합니다. \n 1. 리스트 생성.\n _2. 첫번째에 노드 삽입.\n _3. 중간에 노드 삽입.\n _4. 마지막에 노드 삽입.\n 5. 리스트 출력하기.\n _6. 노드 삭제하기.\n 7. 리스트 전체 삭제하기.\n";
-
-    cin >> menuNum; //입력
-
-    switch (menuNum)
-    {
-    case 1:
-
-        nodeHeader = makeList(); //리스트 생성.
-
-        if(nodeHeader == NULL || nodeHeader == nullptr){
-
-            cout << "리스트 생성에서 오류가 발생하였습니다. 명령을 수행하지 못 했습니다. \n";
-
-        }
-        break;
-    
-    case 2:
-        
-        {
-            char tempInput[10]; //data는 총 10까지 하기로 node.h에서 선언.
-
-            cout << "맨 앞 노드에 저장 할 값을 문자열로 입력해 주세요 \n";
-            cin >> tempInput;
-
-            insertFirst(nodeHeader, tempInput); //tempInput 즉, 문자배열은, 그냥 쓰면 배열[0]의 주소를 의미
-            
-            cout << "삽입 완료 \n";
-
-        } //스택변수 자연 초기화 하려고, 이렇게 scope 설정함.
+    node* temp; //결과값을 임시 저장할 포인터 생성, 힙에 저장된 node를 가르킴  -  스택에 저장됨.
 
 
-        break;
 
-    case 3:
-        {
-            char tempInput[10]; //data는 총 10까지 하기로 node.h에서 선언.
+    nodeHead = makeList(); //리스트 생성하여, nodeHead포인터에 저장
 
-            cout << "중간 노드에 저장 할 값을 문자열로 입력해 주세요 \n";
-            cin >> tempInput;
+    cout << " 1. 리스트에 [Mon], [Wed], [Sun] 노드 삽입하기! \n";
+    insertFirst(nodeHead, "Mon"); //책에서는 insertLast를 이용했지만, 난 first를 이용해서 첫 노드를 만듦,  +  char*이 입력값, 그냥 문자열을 주면 문자열 맨 처음 주소값을 주니 되는 것임임
+    insertLast(nodeHead, "Wed");
+    insertLast(nodeHead, "Sun");
 
-            insertMiddle(nodeHeader, tempInput); //tempInput 즉, 문자배열은, 그냥 쓰면 배열[0]의 주소를 의미
-            
-            cout << "삽입 완료 \n";
+    printList(nodeHead);
 
-        } //스택변수 자연 초기화 하려고, 이렇게 scope 설정함.
+    cout << "\n 2. 리스트에서 [Wed] 노드 탐색하기! \n";
+    temp = _searchNode(nodeHead, "Wed");
+    if(temp == NULL)    cout << "탐색에 실패하여, 수행하지 못했습니다.\n";
+    else    cout << temp -> data << " 를 찾았습니다 \n";
 
+    cout << "\n 3. 리스트의 [Wed] 뒤에 [Fri] 노드 삽입하기! \n";
+    insertMiddle(nodeHead, temp, "Fri");
+    /*질문
+    1. 이렇게 파라미터에 char여러개 값을 넣으면
+    힙에 들어가고 인자로 가는건가?
+    즉, 정확한 과정이 궁금하다.
+    */
+   printList(nodeHead);
 
-        break;
+    cout << "\n 4. 리스트에서 [Sun] 노드 삭제하기! \n";
+    temp = _searchNode(nodeHead, "Sun");
 
-    case 4:
-        {
-            char tempInput[10]; //data는 총 10까지 하기로 node.h에서 선언.
+    deleteNode(nodeHead, temp);
 
-            cout << "마지막 노드에 저장 할 값을 문자열로 입력해 주세요 \n";
-            cin >> tempInput;
-
-            insertLast(nodeHeader, tempInput); //tempInput 즉, 문자배열은, 그냥 쓰면 배열[0]의 주소를 의미
-            
-            cout << "삽입 완료 \n";
-
-        } //스택변수 자연 초기화 하려고, 이렇게 scope 설정함.
-
-
-        break;
+    printList(nodeHead);
 
 
-    case 5:
-    
-        printList(nodeHeader); //리스트 출력하는 함수,
-
-        cout << "\n end \n";
-
-        break;
 
 
-    default:
-        break;
-    }
+    freeList(nodeHead);
+    getchar(); //입력 대기.
+
+    return 0;
 
 }
-
-

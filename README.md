@@ -11,12 +11,13 @@
  5. 익명 구조체 (node.h)
  6. 화살표 연산자에 대하여 (linearLinkedList.cpp)
  7. 얕은복사(그냥 등호 사용)와 깊은복사(strcpy or memcpy 사용), 그리고 얕은복사시 delete 의 작동 (linearLinkedList.cpp)
- 8. 
-
+ 8. vscode에서 g++할 때, include path를 .vscode 파일의 task.json 과 c_cpp_properties.json에서 수정 가능하다 (task.json 에 -I 와 -g를 수정하여, 프로젝트 헤더파일 구분을 구현함.).
+ 9. task.json 은 실행 설정, c_cpp_properties.json은 intellisense 설정이다
 
  할 것
  1. 해당 연결 리스트, 인덱스 기능 추가해 보기.
  2. 스마트 포인터 사용해보기
+ 3. 유닛 테스트 해보기.
 
 
  개선점
