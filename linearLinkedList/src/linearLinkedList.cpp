@@ -12,16 +12,17 @@ main.cpp를 실행하면, linarLinkedList.cpp도 실행되는 이유?
 블로그 인용 : [ 링킹 과정에서 특정한 소스 파일에 있는 함수들이 어디어디에 있는지 찾는 과정을 거치게 되는데 ]
 
 */
-#include "node.h"
-#include "linearLinkedList.h"
 
 #include <stdio.h>
 #include <cstring>
 #include <iostream>
 
+#include "node.h"
+#include "linearLinkedList.h"
+
 using namespace std;
 
-nodeHeader *makeList()
+nodeHeader* makeList()
 {
 
     nodeHeader *header = new nodeHeader();
@@ -30,7 +31,7 @@ nodeHeader *makeList()
     return header;
 };
 
-void insertFirst(nodeHeader *header, char *insertData)
+void insertFirst(nodeHeader *header, const char *insertData)
 {
 
     node *newNode = new node();
@@ -57,7 +58,7 @@ void insertFirst(nodeHeader *header, char *insertData)
     return;
 };
 
-void insertMiddle(nodeHeader *header, node *pre, char *insertData)
+void insertMiddle(nodeHeader *header, node *pre, const char *insertData)
 {
 
     node *newNode = new node();
@@ -87,7 +88,7 @@ void insertMiddle(nodeHeader *header, node *pre, char *insertData)
     return;
 };
 
-void insertLast(nodeHeader *header, char *insertData)
+void insertLast(nodeHeader *header, const char *insertData)
 {
 
     node *newNode = new node();
@@ -150,7 +151,7 @@ bool _copyNode(node *destination, node *source)
 
 //여기서부터 return pointer를 어떻게 줘야할지 문제임.
 
-node *_searchNode(nodeHeader *header, char *targetData)
+node *_searchNode(nodeHeader *header, const char *targetData)
 {
 
     //node *result = new node(); // 결과를 저장할 노드 결과를 새로운 메모리를 만들어야(stack에 저장) 함수가 끝나도 사라지지 x
@@ -257,16 +258,16 @@ node *_searchNode(nodeHeader *header, node *targetLink)
 
 void printList(nodeHeader *header)
 {
-
     // 리스트 오류 거르기.
 
-    if (header->head == NULL)
+    if (header->head == NULL) { //[human error] -> 중괄호를 안했음.
         cout << "리스트가 비었습니다." << endl;
         return;
 
+    } 
     //node *temp = new node(); // 노드를 출력할 임시 개체.
-
     
+
     node *temp = header->head; // 시작 노드의 주소값을 임시 개체에 저장.
 
     cout << "\n\n노드 헤더 출력\n"  << endl;
