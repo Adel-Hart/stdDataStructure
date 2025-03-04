@@ -16,6 +16,7 @@ main.cpp를 실행하면, linarLinkedList.cpp도 실행되는 이유?
 #include <stdio.h>
 #include <cstring>
 #include <iostream>
+#include <memory.h> //스마트 포인터 사용을 위한, 헤더파일
 
 #include "node.h"
 #include "linearLinkedList.h"
