@@ -1,7 +1,7 @@
 #ifndef __node_H__
 #define __node_H__
 
-typedef struct Node //연결 리스트의 노드
+typedef struct //연결 리스트의 노드
 {
     /* data */
     char data[10];
@@ -14,7 +14,7 @@ typedef struct{  //연결 리스트의 앞부분, !! 연결 리스트는 앞 부
     node* head;
 
 } nodeHeader; //"익명 구조체" typedef와 구조체 별칭이 있으면, struct 이름 정의 안해도 ok이다.
-
+    
 
 
 #endif
